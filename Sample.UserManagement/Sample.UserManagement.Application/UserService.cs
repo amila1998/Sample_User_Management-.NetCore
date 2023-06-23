@@ -18,15 +18,6 @@ namespace Sample.UserManagement.Application
             _userRepository = userRepository;
         }
 
-        //public User Register(User user)
-        //{
-        //    //Encrypt the password
-        //    user.Password = EncryptPassword(user.Password);
-
-        //    _userRepository.Register(user);
-        //    return user;
-        //}
-
         public void Register(UserDto user, List<ImageDto> image)
         {
             //Encrypt the password

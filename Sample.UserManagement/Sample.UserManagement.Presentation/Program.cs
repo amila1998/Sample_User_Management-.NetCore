@@ -7,11 +7,17 @@ using Sample.UserManagement.Infrastructure;
 using Sample.UserManagement.Infrastructure.Data;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
+using System;
+using System.IO;
+using CloudinaryDotNet;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Register Configuration
-var configuration = builder.Configuration;
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json")
+    .Build();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -42,6 +48,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+Account account = new Account(
+  configuration["Cloudinary:CloudName"],
+  configuration["Cloudinary:ApiKey"],
+  configuration["Cloudinary:ApiSecret"]);
+
+Cloudinary cloudinary = new Cloudinary(account);
+builder.Services.AddSingleton(cloudinary);
+
 // Add Database Service
 builder.Services.AddDbContext<UserManagementDbContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
      b => b.MigrationsAssembly("Sample.UserManagement.Presentation")));
@@ -50,6 +64,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<Sample.UserManagement.Application.IAuthenticationService, Sample.UserManagement.Application.AuthenticationService>();
 builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
+builder.Services.AddScoped<IImageUploadService, CloudinaryImageUploadService>();
 
 var app = builder.Build();
 

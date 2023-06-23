@@ -30,21 +30,6 @@ namespace Sample.UserManagement.Infrastructure
             _configuration = configuration;
         }
 
-
-        //public User Register(User user)
-        //{
-        //    // Check if the email already exists in the database
-        //    if (_dbContext.Users.Any(u => u.Email == user.Email))
-        //    {
-        //        throw new Exception("Email already exists."); // You can throw a specific exception or handle the duplicate email case as per your requirements.
-        //    }
-
-        //    // Add the user to the database
-        //    _dbContext.Users.Add(user);
-        //    _dbContext.SaveChanges();
-        //    return user;
-        //}
-
         public void Register(UserDto userDto, List<ImageDto> imagesDto)
         {
             // Check if the email already exists in the database
@@ -54,9 +39,9 @@ namespace Sample.UserManagement.Infrastructure
             }
 
             // Map the UserDto to the User entity
-            // Map the UserDto to the User entity
             var newUser = new User
             {
+                Title = userDto.Title,
                 FirstName = userDto.FirstName,
                 LastName = userDto.LastName,
                 DateOfBirth = userDto.DateOfBirth,
@@ -73,7 +58,6 @@ namespace Sample.UserManagement.Infrastructure
                 var newImage = new Image
                 {
                     ImagePath = imageDto.ImagePath,
-                    // Map other image properties as needed
                 };
 
                 newUser.Images.Add(newImage);
