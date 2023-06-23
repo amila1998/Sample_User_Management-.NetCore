@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext } from 'react'
+import { AuthContext } from './context/AuthContext';
+import AuthLayout from './layouts/AuthLayout/AuthLayout';
+import InquiryLayout from './layouts/InquiryLayout/InquiryLayout';
+import {BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/Header/Header';
+import './App.css'
 
-function App() {
+const App = () => {
+  const { dispatch, isLoggedIn } = useContext(AuthContext);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <Header/>
+        <Routes>
+          <Route path='/' Component={isLoggedIn? InquiryLayout : AuthLayout}/>
+        </Routes>
+      </Router>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

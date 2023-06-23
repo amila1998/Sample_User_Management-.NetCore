@@ -19,6 +19,9 @@ namespace Sample.UserManagement.Domain
 
         [Required]
         public string ImagePath { get; set; }
+        [Required]
+        public int ImagePriority { get; set; }
+
 
         public User User { get; set; }
     }

@@ -11,7 +11,7 @@ namespace Sample.UserManagement.Application.DTOs
     public class ImageDto
     {
         public int ImageId { get; set; }
-
         public string ImagePath { get; set; }
+        public int ImagePriority { get; set; }
     }
 }

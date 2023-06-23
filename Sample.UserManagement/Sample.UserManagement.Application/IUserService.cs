@@ -15,6 +15,6 @@ namespace Sample.UserManagement.Application
         User GetUserByEmail(string email);
         User GetUserById(int userId);
         User UpdateUser(User user);
-        IEnumerable<User> Search(string firstName, string lastName, DateTime? fromDateOfBirth, DateTime? toDateOfBirth, string gender);
+        IEnumerable<UserListDto> Search(string firstName, string lastName, DateTime? fromDateOfBirth, DateTime? toDateOfBirth, string gender);
     }
 }

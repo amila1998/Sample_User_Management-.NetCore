@@ -38,11 +38,11 @@ namespace Sample.UserManagement.Presentation.Controllers
         }
 
         [HttpPost("login")]
-        public ActionResult LoginUser(string email, string password)
+        public ActionResult LoginUser([FromBody] LoginDto loginDto)
         {
             try
             {
-                var token = _authenticationService.Authenticate(email, password);
+                var token = _authenticationService.Authenticate(loginDto.Email, loginDto.Password);
                 return Ok(new { Token = token });
             }
             catch (Exception ex)
@@ -76,11 +76,19 @@ namespace Sample.UserManagement.Presentation.Controllers
         [HttpGet("search")]
         public IActionResult SearchUsers([FromQuery] UserSearchDto searchDto)
         {
-            // Perform the search operation using the UserService
-            var users = _service.Search(searchDto.FirstName, searchDto.LastName, searchDto.FromDateOfBirth, searchDto.ToDateOfBirth, searchDto.Gender);
+            try
+            {
+                // Perform the search operation using the UserService
+                var users = _service.Search(searchDto.FirstName, searchDto.LastName, searchDto.FromDateOfBirth, searchDto.ToDateOfBirth, searchDto.Gender);
 
-            // Return the list of users as a response
-            return Ok(users);
+                // Return the list of users as a response
+                return Ok(users);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         private int GetUserIdFromToken()

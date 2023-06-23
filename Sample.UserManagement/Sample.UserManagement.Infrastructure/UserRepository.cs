@@ -41,11 +41,11 @@ namespace Sample.UserManagement.Infrastructure
             // Map the UserDto to the User entity
             var newUser = new User
             {
-                Title = userDto.Title,
-                FirstName = userDto.FirstName,
-                LastName = userDto.LastName,
+                Title = userDto.Title.ToLower(),
+                FirstName = userDto.FirstName.ToLower(),
+                LastName = userDto.LastName.ToLower(),
                 DateOfBirth = userDto.DateOfBirth,
-                Gender = userDto.Gender,
+                Gender = userDto.Gender.ToLower(),
                 Email = userDto.Email,
                 Password = userDto.Password,
                 Remark = userDto.Remark,
@@ -58,6 +58,7 @@ namespace Sample.UserManagement.Infrastructure
                 var newImage = new Image
                 {
                     ImagePath = imageDto.ImagePath,
+                    ImagePriority = imageDto.ImagePriority,
                 };
 
                 newUser.Images.Add(newImage);
@@ -86,9 +87,9 @@ namespace Sample.UserManagement.Infrastructure
             return user; 
         }
 
-        public IEnumerable<User> Search(string firstName, string lastName, DateTime? fromDateOfBirth, DateTime? toDateOfBirth, string gender)
+        public IEnumerable<UserListDto> Search(string firstName, string lastName, DateTime? fromDateOfBirth, DateTime? toDateOfBirth, string gender)
         {
-            var query = _dbContext.Set<User>().AsQueryable();
+            var query = _dbContext.Set<User>().Include(u => u.Images).AsQueryable();
 
             if (!string.IsNullOrEmpty(firstName))
                 query = query.Where(u => u.FirstName.Contains(firstName));
@@ -105,7 +106,25 @@ namespace Sample.UserManagement.Infrastructure
             if (!string.IsNullOrEmpty(gender))
                 query = query.Where(u => u.Gender == gender);
 
-            return query.ToList();
+            // Project the query results to UserListDto
+            var userList = query.Select(u => new UserListDto
+            {
+                Title = u.Title,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                DateOfBirth = u.DateOfBirth,
+                Gender = u.Gender,
+                Email = u.Email,
+                Remark = u.Remark,
+                Images = u.Images.Select(i => new ImageDto
+                {
+                    ImageId = i.ImageId,
+                    ImagePath = i.ImagePath,
+                    ImagePriority = i.ImagePriority,
+                }).ToList()
+            });
+
+            return userList.ToList();
         }
 
     

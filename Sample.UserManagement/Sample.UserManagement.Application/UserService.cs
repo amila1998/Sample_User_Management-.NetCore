@@ -51,7 +51,7 @@ namespace Sample.UserManagement.Application
         {
             return _userRepository.UpdateUser(user);
         }
-        public IEnumerable<User> Search(string firstName, string lastName, DateTime? fromDateOfBirth, DateTime? toDateOfBirth, string gender)
+        public IEnumerable<UserListDto> Search(string firstName, string lastName, DateTime? fromDateOfBirth, DateTime? toDateOfBirth, string gender)
         {
             // Perform the search operation by calling the corresponding method on the UserRepository
             return _userRepository.Search(firstName, lastName, fromDateOfBirth, toDateOfBirth, gender);

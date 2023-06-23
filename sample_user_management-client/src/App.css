@@ -36,3 +36,32 @@
     transform: rotate(360deg);
   }
 }
+
+.auth_link{
+  margin-top: 10px;
+  cursor: pointer;
+  color: rgb(100, 100, 100);
+}
+
+.flex_center{
+  justify-content: center;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.cursor_pointer{
+  cursor: pointer;
+}
+
+.main_inquiry{
+  width: 100%;
+  display: flex;
+}
+
+.search_con{
+  width: 60%;
+}
+.user_list{
+  width: 40%;
+  background-color: #a7a7a7;
+}
